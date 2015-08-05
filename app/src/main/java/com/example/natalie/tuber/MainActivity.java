@@ -1,6 +1,7 @@
 package com.example.natalie.tuber;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -9,8 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -58,24 +65,25 @@ public class MainActivity extends ActionBarActivity {
                     public void onClick(View view)
                     {
                         Log.v("EditText", start_address.getText().toString());
-                        getUberCost(1, 1, 1, 1);
-                    }
+                        getUberCost(37.775818, -122.418028, 37.775838, -122.118028);                    }
                 });
     }
 
-    public double getUberCost(double startLatitute, double startLongitude, double endLatitude, double endLongitude){
+    public static double getUberCost(double startLatitude, double startLongitude, double endLatitude, double endLongitude){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
         String uberData = null;
 
-        try {
-            // Construct the URL for the OpenWeatherMap query
-            // Possible parameters are available at OWM's forecast API page, at
-            // http://openweathermap.org/API#forecast
+        String pass_url = "https://api.uber.com/v1/estimates/price?server_token=28t86KafW8mM1WjOVyQJ2_rLmVWEU71LVeC5ucjW&start_latitude=" + Double.toString(startLatitude) + "&start_longitude=" + Double.toString(startLongitude) + "&end_latitude=" + Double.toString(endLatitude) + "&end_longitude=" + Double.toString(endLongitude);
 
-            //https://api.uber.com/v1/estimates/price?server_token=28t86KafW8mM1WjOVyQJ2_rLmVWEU71LVeC5ucjW&start_latitude=37.775818&start_longitude=-122.418028&end_latitude=37.775838&end_longitude=-122.118028
-            URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+        try {
+            //URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+            //URL url = new URL("https://api.uber.com/v1/estimates/price?server_token=28t86KafW8mM1WjOVyQJ2_rLmVWEU71LVeC5ucjW&start_latitude=37.775818&start_longitude=-122.418028&end_latitude=37.775838&end_longitude=-122.118028");
+            URL url = new URL(pass_url);
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -83,8 +91,9 @@ public class MainActivity extends ActionBarActivity {
             urlConnection.connect();
 
             // Read the input stream into a String
-            /*InputStream inputStream = urlConnection.getInputStream();
+            InputStream inputStream = urlConnection.getInputStream();
             StringBuffer buffer = new StringBuffer();
+
             if (inputStream == null) {
                 // Nothing to do.
                 uberData = null;
@@ -103,27 +112,44 @@ public class MainActivity extends ActionBarActivity {
                 // Stream was empty.  No point in parsing.
                 uberData = null;
             }
-            uberData = buffer.toString(); */
+            uberData = buffer.toString();
         } catch (IOException e) {
-            Log.e("PlaceholderFragment", "Error ", e);
+            //Log.e("PlaceholderFragment", "Error ", e);
+            String msg = (e.getMessage()==null)?"Login failed!":e.getMessage();
+            Log.e("Login Error1",msg);
+
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
             uberData = null;
-        } /*finally{
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e("PlaceholderFragment", "Error closing stream", e);
-                }
-            }
-        }*/
+        }
 
-        //Log.v("Uber Data", uberData);
-        Log.v("UberData", "here");
+        Log.v("Uber Data", uberData);
+
+        JSONObject forecastJson = null;
+        try {
+            forecastJson = new JSONObject(uberData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONArray weatherArray = null;
+        try {
+            weatherArray = forecastJson.getJSONArray("prices");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            Log.v("low estimate: ", String.valueOf(weatherArray.getJSONObject(0).getInt("low_estimate")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            return weatherArray.getJSONObject(0).getInt("low_estimate");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return 0;
     }
 }
