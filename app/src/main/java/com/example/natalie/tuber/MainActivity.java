@@ -23,13 +23,11 @@ import java.net.URL;
 
 
 public class MainActivity extends ActionBarActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getResultsButton();
+        getResultsButton2();
     }
 
     @Override
@@ -54,22 +52,37 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getResultsButton(){
+    public void getResultsButton2() {
+        Button button = (Button) findViewById(R.id.button);
+        final EditText origin = (EditText) findViewById(R.id.editText);
+        final EditText destination = (EditText) findViewById(R.id.editText2);
+        final String api_key = getString(R.string.taxifarefinder_api_key);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Log.v("origin", origin.getText().toString());
+                Log.v("destination", destination.getText().toString());
+                FetchTaxiPriceTask taxiPriceTask = new FetchTaxiPriceTask(api_key);
+                //"42.368025,-71.022155","42.362571,-71.055543"
+                taxiPriceTask.execute(origin.getText().toString(), destination.getText().toString());
+            }
+        });
+    }
+
+    public void getResultsButton() {
         Button button = (Button) findViewById(R.id.button);
 
-        final EditText start_address  = (EditText)findViewById(R.id.editText);
+        final EditText start_address = (EditText) findViewById(R.id.editText);
 
         button.setOnClickListener(
-                new View.OnClickListener()
-                {
-                    public void onClick(View view)
-                    {
+                new View.OnClickListener() {
+                    public void onClick(View view) {
                         Log.v("EditText", start_address.getText().toString());
-                        getUberCost(37.775818, -122.418028, 37.775838, -122.118028);                    }
+                        getUberCost(37.775818, -122.418028, 37.775838, -122.118028);
+                    }
                 });
     }
 
-    public static double getUberCost(double startLatitude, double startLongitude, double endLatitude, double endLongitude){
+    public static double getUberCost(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -115,8 +128,8 @@ public class MainActivity extends ActionBarActivity {
             uberData = buffer.toString();
         } catch (IOException e) {
             //Log.e("PlaceholderFragment", "Error ", e);
-            String msg = (e.getMessage()==null)?"Login failed!":e.getMessage();
-            Log.e("Login Error1",msg);
+            String msg = (e.getMessage() == null) ? "Login failed!" : e.getMessage();
+            Log.e("Login Error1", msg);
 
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
