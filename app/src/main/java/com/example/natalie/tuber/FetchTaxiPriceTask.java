@@ -1,8 +1,11 @@
 package com.example.natalie.tuber;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,13 +23,18 @@ import java.net.URL;
 public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
 
     private final String LOG_TAG = FetchTaxiPriceTask.class.getSimpleName();
-    private String api_key;
+    private String mapi_key;
+    private ArrayAdapter<String> mQueryAdapterTaxi;
+    private final Context mContext;
 
-    public FetchTaxiPriceTask(String api_key) {
-        this.api_key = api_key;
+
+    public FetchTaxiPriceTask(Context context, String api_key, ArrayAdapter<String> queryAdapterTaxi) {
+        mContext = context;
+        mapi_key = api_key;
+        mQueryAdapterTaxi = queryAdapterTaxi;
     }
 
-    private String[] getWeatherDataFromJson(String taxiFareJsonStr, int numEntities)
+    private String[] getTaxiDataFromJson(String taxiFareJsonStr, int numEntities)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -61,6 +69,13 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
     @Override
     protected void onPostExecute (String[] result){
         Log.v(LOG_TAG, "Taxi total fare is: "+result[0]);
+        if (result != null && mQueryAdapterTaxi != null) {
+            mQueryAdapterTaxi.clear();
+            for(String dayForecastStr : result) {
+                mQueryAdapterTaxi.add(dayForecastStr);
+            }
+            // New data is back from the server.  Hooray!
+        }
     }
 
     @Override
@@ -92,7 +107,7 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
             final String ENTITY_HANDLE = "entity_handle";
 
             Uri builtUri = Uri.parse(TAXI_BASE_URL).buildUpon()
-                    .appendQueryParameter(API_KEY, api_key)
+                    .appendQueryParameter(API_KEY, mapi_key)
                     .appendQueryParameter(ORIGIN, params[0])
                     .appendQueryParameter(DESTINATION, params[1])
                     .build();
@@ -149,7 +164,7 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
         // for now, we just get the total amount
 
         try {
-            return getWeatherDataFromJson(taxiFareJsonStr, 1);
+            return getTaxiDataFromJson(taxiFareJsonStr, 1);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();

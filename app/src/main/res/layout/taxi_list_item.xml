@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/list_item_taxi_textview"
+    android:minHeight="?android:attr/listPreferredItemHeight">
+
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Service_name"
+    android:id="@+id/serviceName"
+    android:layout_alignParentLeft="true"
+    android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price_tag"
+        android:id="@+id/priceTag"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

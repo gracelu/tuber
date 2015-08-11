@@ -26,8 +26,12 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getResultsButton2();
+        setContentView(R.layout.main);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new QueryFragment())
+                    .commit();
+        }
     }
 
     @Override
@@ -51,22 +55,22 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void getResultsButton2() {
-        Button button = (Button) findViewById(R.id.button);
-        final EditText origin = (EditText) findViewById(R.id.editText);
-        final EditText destination = (EditText) findViewById(R.id.editText2);
-        final String api_key = getString(R.string.taxifarefinder_api_key);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Log.v("origin", origin.getText().toString());
-                Log.v("destination", destination.getText().toString());
-                FetchTaxiPriceTask taxiPriceTask = new FetchTaxiPriceTask(api_key);
-                //"42.368025,-71.022155","42.362571,-71.055543"
-                taxiPriceTask.execute(origin.getText().toString(), destination.getText().toString());
-            }
-        });
-    }
+//
+//    public void getResultsButton2() {
+//        Button button = (Button) findViewById(R.id.button);
+//        final EditText origin = (EditText) findViewById(R.id.editText);
+//        final EditText destination = (EditText) findViewById(R.id.editText2);
+//        final String api_key = getString(R.string.taxifarefinder_api_key);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                Log.v("origin", origin.getText().toString());
+//                Log.v("destination", destination.getText().toString());
+//                FetchTaxiPriceTask taxiPriceTask = new FetchTaxiPriceTask(api_key);
+//                //"42.368025,-71.022155","42.362571,-71.055543"
+//                taxiPriceTask.execute(origin.getText().toString(), destination.getText().toString());
+//            }
+//        });
+//    }
 
     public void getResultsButton() {
         Button button = (Button) findViewById(R.id.button);
