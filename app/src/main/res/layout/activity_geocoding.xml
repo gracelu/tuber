@@ -9,7 +9,7 @@
     tools:context=".GeocodingActivity"
     android:id="@+id/RelativeLayout01"
 
-    android:background = "@drawable/roadBackground">
+    android:background = "@drawable/road_background">
 
     <TextView android:id="@+id/pickupLocation"
         android:layout_width="wrap_content"
