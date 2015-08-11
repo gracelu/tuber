@@ -6,33 +6,48 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".GeocodingActivity">
+    tools:context=".GeocodingActivity"
+    android:id="@+id/RelativeLayout01">
 
-    <TextView
+    <TextView android:id="@+id/pickupLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter Address"
-        android:id="@+id/addressTV"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="PICKUP LOCATION:"
+        android:width="100dp" />
+
+    <EditText android:id="@+id/EditText01"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/pickupLocation"
+
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:inputType="text"
+        android:editable="true" />
+
+    <EditText android:id="@+id/EditText02"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/EditText01"
+        android:layout_alignLeft="@+id/EditText01"
+        android:layout_alignRight="@+id/EditText01"
+        android:layout_alignEnd="@+id/EditText01" />
+
+    <TextView android:id="@+id/destination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DESTINATION:"
+        android:width="100dp"
+        android:layout_below="@+id/EditText01"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addressET"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/addressTV"
-        android:singleLine="false"
-        android:text="77 Massachusetts Avenue, Cambridge MA 02139" />
-
-    <Button
+    <Button android:text="CALCULATE FARES"
+        android:id="@+id/calculateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show Lat/Long"
-        android:id="@+id/addressButton"
-        android:layout_below="@+id/addressTV"
-        android:layout_toEndOf="@+id/addressTV"
-        android:layout_marginTop="50dp" />
+        android:layout_below="@+id/EditText02"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,6 +56,7 @@
         android:text=""
         android:id="@+id/latLongTV"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/addressTV" />
+        android:layout_below="@+id/calculateButton" />
+
 
 </RelativeLayout>

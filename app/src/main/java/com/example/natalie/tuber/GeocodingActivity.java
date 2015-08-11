@@ -1,5 +1,6 @@
 package com.example.natalie.tuber;
 
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +12,8 @@ import android.widget.TextView;
 
 
 public class GeocodingActivity extends Activity {
-    Button addressButton;
-    TextView addressTV;
+    Button calculateButton;
+    TextView pickupLocation;
     TextView latLongTV;
 
     @Override
@@ -21,15 +22,15 @@ public class GeocodingActivity extends Activity {
         setContentView(R.layout.activity_geocoding);
 
 
-        addressTV = (TextView) findViewById(R.id.addressTV);
+        pickupLocation = (TextView) findViewById(R.id.pickupLocation);
         latLongTV = (TextView) findViewById(R.id.latLongTV);
 
-        addressButton = (Button) findViewById(R.id.addressButton);
-        addressButton.setOnClickListener(new View.OnClickListener() {
+        calculateButton = (Button) findViewById(R.id.calculateButton);
+        calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
 
-                EditText editText = (EditText) findViewById(R.id.addressET);
+                EditText editText = (EditText) findViewById(R.id.EditText01);
                 String address = editText.getText().toString();
 
                 GeocodingLocation locationAddress = new GeocodingLocation();
