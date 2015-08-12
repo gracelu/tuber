@@ -15,7 +15,7 @@ public class resultsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_activity);
         String[] Lat_long = getIntent().getStringArrayExtra("LATLONG_DATA");
-
+        Log.v(LOG_TAG,"rotate");
         Bundle arguments = new Bundle();
         arguments.putStringArray("LATLONG_DATA", Lat_long);
         QueryFragment qFragment = new QueryFragment();
