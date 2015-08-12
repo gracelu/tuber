@@ -66,6 +66,9 @@ public class MainActivity extends ActionBarActivity {
                 AsyncTask<String, Void, String[]> taxresults = taxiTask.execute(taxiOrig, taxiDest);
                 Log.v("TaxiFare", "0" );
 
+                FetchUberPriceTask uberTask = new FetchUberPriceTask(MainActivity.this);
+                uberTask.execute(uberOrigLat,uberOrigLong,uberDestLat,uberDestLong);
+
 
                 setContentView(R.layout.fragment_query);
 
