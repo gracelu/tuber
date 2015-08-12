@@ -41,8 +41,8 @@ public class QueryFragment extends Fragment {
                         new ArrayList<String>());
 
         View rootView = inflater.inflate(R.layout.fragment_query, container, false);
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_taxi);
-        listView.setAdapter(mQueryAdapterTaxi);
+        //ListView listView = (ListView) rootView.findViewById(R.id.fragment_taxi);
+        //listView.setAdapter(mQueryAdapterTaxi);
 
         return rootView;
     }
