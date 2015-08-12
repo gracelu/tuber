@@ -7,8 +7,6 @@
     <string name="title_activity_splash_screen">splashScreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!-- The api_key is getting from Github user sbcd90 at https://github.com/sbcd90/makeItEasy.com -->
     <string name="taxifarefinder_api_key">wEGuch2qepAq</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

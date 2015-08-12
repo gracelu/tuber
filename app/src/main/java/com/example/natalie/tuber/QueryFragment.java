@@ -56,6 +56,8 @@ public class QueryFragment extends Fragment implements LoaderManager.LoaderCallb
         View rootView = inflater.inflate(R.layout.fragment_query, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.listview_uber);
         listView.setAdapter(mQueryAdapter);
+        api_key = getActivity().getString(R.string.taxifarefinder_api_key);
+        Log.v(LOG_TAG, api_key);
         getActivity().getContentResolver().delete(PriceContract.PriceEntry.CONTENT_URI,
                 null, null);
         updatePrice();

@@ -35,7 +35,7 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
 
     public FetchTaxiPriceTask(Context context, String api_key) {
         mContext = context;
-        mapi_key = "wEGuch2qepAq";
+        mapi_key = api_key;
     }
 
     private String[] getTaxiDataFromJson(String taxiFareJsonStr, int numEntities)
