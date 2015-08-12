@@ -156,7 +156,7 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
             Log.v(LOG_TAG, "Fare finder string: " + uberJson.getJSONArray("prices").getJSONObject(0));
             try {
                 uber1Str = uberJson.getJSONArray("prices").getJSONObject(0).toString();
-            } finally {
+            } catch (JSONException e) {
                 return null;
             }
         } catch (IOException e) {
