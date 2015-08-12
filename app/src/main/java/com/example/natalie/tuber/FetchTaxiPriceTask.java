@@ -66,7 +66,7 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
         for(int i = 1; i<resultStrs.length;i++){
             extras.append(resultStrs[i]+",");
         }
-        addPrice(serviceName, resultStrs[0], Double.parseDouble(resultStrs[0]), serviceId, extras.toString());
+        addPrice(serviceName, "$"+resultStrs[0], Double.parseDouble(resultStrs[0]), serviceId, extras.toString());
         return resultStrs;
     }
 

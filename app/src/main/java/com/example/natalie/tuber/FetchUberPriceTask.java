@@ -37,9 +37,9 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
     private String[] getWeatherDataFromJson(String taxiFareJsonStr, int numEntities)
             throws JSONException {
-        Log.v(LOG_TAG, "Uber total fare is: " + "getWeatherDataFromJson");
+        //Log.v(LOG_TAG, "Uber total fare is: " + "getWeatherDataFromJson");
         if (taxiFareJsonStr == null) {
-            Log.v("UberPrice", "Uber not available");
+            Log.i("UberPrice", "Uber not available");
             return null;
         }
         // These are the names of the JSON objects that need to be extracted.
@@ -62,7 +62,6 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
         for (int i = 0; i < numEntities; i++) {
             resultStrs[i] = taxiFareJson.getString(Entities[i]);
-            Log.v(LOG_TAG, resultStrs[i]);
         }
 
         addPrice(resultStrs[0], resultStrs[3], Double.parseDouble(resultStrs[1]), serviceId, resultStrs[2]);

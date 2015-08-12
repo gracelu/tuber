@@ -51,7 +51,6 @@ public class QueryFragment extends Fragment implements LoaderManager.LoaderCallb
         if (arguments != null) {
             Long_lat = arguments.getStringArray("LATLONG_DATA");
         }
-        Log.v(LOG_TAG, Long_lat[0]+" "+Long_lat[1]);
         // Inflate the layout for this fragment
         mQueryAdapter =  new PriceAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.fragment_query, container, false);
@@ -78,7 +77,6 @@ public class QueryFragment extends Fragment implements LoaderManager.LoaderCallb
         FetchUberPriceTask uberTask = new FetchUberPriceTask(getActivity());
         uberTask.execute(Long_lat[0],Long_lat[1],Long_lat[2],Long_lat[3]);
         taxiTask.execute(Long_lat[0]+","+Long_lat[1], Long_lat[2]+","+Long_lat[3]);
-        Log.v(LOG_TAG, "task running");
     }
 
     @Override
