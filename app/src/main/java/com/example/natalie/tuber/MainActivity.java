@@ -67,6 +67,7 @@ public class MainActivity extends ActionBarActivity {
 
 
                 Intent intent = new Intent(getApplicationContext(), resultsActivity.class);
+                intent.putExtra("LATLONG_DATA", new String[]{uberOrigLat,uberOrigLong,uberDestLat,uberDestLong});
                 startActivity(intent);
 
 

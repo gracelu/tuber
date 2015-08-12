@@ -23,6 +23,7 @@ public class QueryFragment extends Fragment implements LoaderManager.LoaderCallb
     private static final int PRICE_LOADER = 0;
     PriceAdapter mQueryAdapter;
     String api_key;
+    String[] Long_lat;
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
@@ -46,6 +47,11 @@ public class QueryFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            Long_lat = arguments.getStringArray("LATLONG_DATA");
+        }
+        Log.v(LOG_TAG, Long_lat[0]+" "+Long_lat[1]);
         // Inflate the layout for this fragment
         mQueryAdapter =  new PriceAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.fragment_query, container, false);
@@ -53,6 +59,7 @@ public class QueryFragment extends Fragment implements LoaderManager.LoaderCallb
         listView.setAdapter(mQueryAdapter);
         getActivity().getContentResolver().delete(PriceContract.PriceEntry.CONTENT_URI,
                 null, null);
+        updatePrice();
         return rootView;
     }
 
@@ -69,15 +76,15 @@ public class QueryFragment extends Fragment implements LoaderManager.LoaderCallb
     private void updatePrice() {
         FetchTaxiPriceTask taxiTask = new FetchTaxiPriceTask(getActivity(), api_key);
         FetchUberPriceTask uberTask = new FetchUberPriceTask(getActivity());
-        uberTask.execute("42.368025","-71.022155","42.362571","-71.055543");
-        taxiTask.execute("42.368025,-71.022155","42.362571,-71.055543");
+        uberTask.execute(Long_lat[0],Long_lat[1],Long_lat[2],Long_lat[3]);
+        taxiTask.execute(Long_lat[0]+","+Long_lat[1], Long_lat[2]+","+Long_lat[3]);
         Log.v(LOG_TAG, "task running");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        updatePrice();
+
     }
 
     @Override
