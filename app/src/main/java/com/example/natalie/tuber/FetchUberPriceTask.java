@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,6 +32,10 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
     private String[] getWeatherDataFromJson(String taxiFareJsonStr, int numEntities)
             throws JSONException {
 
+        if (taxiFareJsonStr == null){
+            Log.v("UberPrice", "Uber not available");
+            return null;
+        }
         // These are the names of the JSON objects that need to be extracted.
 
         //String serviceName, String price, double lowPrice, int identity, String extras
@@ -62,7 +67,8 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
     @Override
     protected void onPostExecute (String[] result){
-        Log.v(LOG_TAG, "Uber total fare is: "+result[0]);
+        if (result != null)
+            Log.v(LOG_TAG, "Uber total fare is: "+result[0]);
     }
 
     @Override
@@ -115,7 +121,14 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
             urlConnection.connect();
 
             // Read the input stream into a String
-            InputStream inputStream = urlConnection.getInputStream();
+
+            InputStream inputStream = null;
+            try {
+                inputStream = urlConnection.getInputStream();
+            } catch (FileNotFoundException e) {
+                return null;
+            }
+
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
                 // Nothing to do.
@@ -137,8 +150,11 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
             JSONObject uberJson = new JSONObject(taxiFareJsonStr);
             Log.v(LOG_TAG, "Fare finder string: " + uberJson.getJSONArray("prices").getJSONObject(0));
-
-            uber1Str = uberJson.getJSONArray("prices").getJSONObject(0).toString();
+            try {
+                uber1Str = uberJson.getJSONArray("prices").getJSONObject(0).toString();
+            } finally {
+                return null;
+            }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
@@ -165,7 +181,11 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
         try {
             JSONObject uberJson = new JSONObject(taxiFareJsonStr);
 
-            return getWeatherDataFromJson(String.valueOf(uberJson.getJSONArray("prices").getJSONObject(0)), 4);
+            if (uberJson != null)
+                return getWeatherDataFromJson(String.valueOf(uberJson.getJSONArray("prices").getJSONObject(0)), 4);
+            else
+                return null;
+
             //return weatherArray.getJSONObject(0).getInt("low_estimate");
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
