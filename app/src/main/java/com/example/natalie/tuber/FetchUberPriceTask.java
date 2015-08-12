@@ -26,7 +26,7 @@ import java.net.URL;
 
 public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
-    private final String LOG_TAG = FetchTaxiPriceTask.class.getSimpleName();
+    private final String LOG_TAG = FetchUberPriceTask.class.getSimpleName();
     //private String api_key;
     private final Context mContext;
     private final int serviceId = 1;
@@ -37,8 +37,8 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
     private String[] getWeatherDataFromJson(String taxiFareJsonStr, int numEntities)
             throws JSONException {
-
-        if (taxiFareJsonStr == null){
+        Log.v(LOG_TAG, "Uber total fare is: " + "getWeatherDataFromJson");
+        if (taxiFareJsonStr == null) {
             Log.v("UberPrice", "Uber not available");
             return null;
         }
@@ -60,18 +60,19 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
         //Todo: remember to add conditions for status that are not OK
 
 
-            for (int i = 0; i < numEntities; i++) {
-                resultStrs[i] = taxiFareJson.getString(Entities[i]);
-            }
+        for (int i = 0; i < numEntities; i++) {
+            resultStrs[i] = taxiFareJson.getString(Entities[i]);
+            Log.v(LOG_TAG, resultStrs[i]);
+        }
 
         addPrice(resultStrs[0], resultStrs[3], Double.parseDouble(resultStrs[1]), serviceId, resultStrs[2]);
         return resultStrs;
     }
 
     @Override
-    protected void onPostExecute (String[] result){
+    protected void onPostExecute(String[] result) {
         if (result != null)
-            Log.v(LOG_TAG, "Uber total fare is: "+result[0]);
+            Log.v(LOG_TAG, "Uber total fare is: " + result[0]);
     }
 
     @Override
@@ -183,7 +184,7 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
         try {
             JSONObject uberJson = new JSONObject(taxiFareJsonStr);
-
+             Log.v(LOG_TAG, "Going "+uberJson);
             if (uberJson != null)
                 return getWeatherDataFromJson(String.valueOf(uberJson.getJSONArray("prices").getJSONObject(0)), 4);
             else
@@ -219,6 +220,7 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
         // The resulting URI contains the ID for the row.  Extract the locationId from the Uri.
         priceId = ContentUris.parseId(insertedUri);
+        Log.v(LOG_TAG, priceId + "");
         return priceId;
     }
 
