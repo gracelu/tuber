@@ -19,14 +19,14 @@ public class GeocodingLocation {
 
     public static double[] getAddressFromLocation(final String locationAddress,
                                                   final Context context) {
-        final double[] result = new double[2];
+        double[] result = null;
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
             List
                     addressList = geocoder.getFromLocationName(locationAddress, 1);
             if (addressList != null && addressList.size() > 0) {
                 Address address = (Address) addressList.get(0);
-
+                result = new double[2];
                 result[0] = address.getLatitude();
                 result[1] = address.getLongitude();
 
@@ -34,7 +34,6 @@ public class GeocodingLocation {
 
         } catch (IOException e) {
             Log.e(TAG, "Unable to connect to Geocoder", e);
-
         }
         return result;
     }

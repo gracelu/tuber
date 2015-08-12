@@ -25,20 +25,26 @@ public class MainActivity extends ActionBarActivity {
 
         final EditText origin = (EditText) findViewById(R.id.EditText01);
         final EditText destination = (EditText) findViewById(R.id.EditText02);
-        final double[] originLocation = new double[2];
-        final double[] destinationLocation = new double[2];
 
         final Button[] addressButton = {(Button) findViewById(R.id.calculateButton)};
         addressButton[0].setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 GeocodingLocation locationAddress = new GeocodingLocation();
-                originLocation[0] = locationAddress.getAddressFromLocation(origin.getText().toString(), getApplicationContext())[0];
-                originLocation[1] = locationAddress.getAddressFromLocation(origin.getText().toString(), getApplicationContext())[1];
 
-                destinationLocation[0] = locationAddress.getAddressFromLocation(destination.getText().toString(), getApplicationContext())[0];
-                destinationLocation[1] = locationAddress.getAddressFromLocation(destination.getText().toString(), getApplicationContext())[1];
+                double[] originLocation = locationAddress.getAddressFromLocation(origin.getText().toString(), getApplicationContext());
+                double[] destinationLocation = locationAddress.getAddressFromLocation(destination.getText().toString(), getApplicationContext());
 
+                if (originLocation == null) {
+                    origin.setText("Invalid location!");
+                }
+                if (destinationLocation == null) {
+                    destination.setText("Invalid location!");
+                }
+                if (originLocation == null || destinationLocation == null)  {
+                    // We can't calculate fares for invalid locations.
+                    return;
+                }
                 String uberOrigLat = Double.toString(originLocation[0]);
                 String uberOrigLong = Double.toString(originLocation[1]);
                 String uberDestLat = Double.toString(destinationLocation[0]);
