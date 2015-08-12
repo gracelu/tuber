@@ -1,5 +1,6 @@
 package com.example.natalie.tuber;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -70,8 +71,8 @@ public class MainActivity extends ActionBarActivity {
                 uberTask.execute(uberOrigLat,uberOrigLong,uberDestLat,uberDestLong);
 
 
-                setContentView(R.layout.fragment_query);
-
+                Intent intent = new Intent(getApplicationContext(), ResultsActivity.class);
+                startActivity(intent);
 
 
             }

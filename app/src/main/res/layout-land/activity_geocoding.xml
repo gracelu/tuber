@@ -37,9 +37,9 @@
     <EditText android:id="@+id/EditText02"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/destination"
         android:layout_alignParentRight= "true"
-        android:background="#ffd9d0d9" />
+        android:background="#ffd9d0d9"
+        android:layout_below="@+id/destination" />
 
     <TextView android:id="@+id/destination"
         android:layout_width="wrap_content"
@@ -62,9 +62,11 @@
         android:width="250dp"
         android:layout_weight=".7"
         android:background="#ffd9d0d9"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/EditText02"
-        android:layout_alignEnd="@+id/EditText02" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/EditText02"
+        android:layout_toStartOf="@+id/EditText02" />
 
     <TextView
         android:layout_width="wrap_content"
