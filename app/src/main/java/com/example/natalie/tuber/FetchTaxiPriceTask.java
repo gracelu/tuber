@@ -61,13 +61,17 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
             for (int i = 0; i < numEntities; i++) {
                 resultStrs[i] = taxiFareJson.getString(Entities[i]);
             }
+
+            StringBuilder extras = new StringBuilder();
+            for (int i = 1; i < resultStrs.length; i++) {
+                extras.append(resultStrs[i] + ",");
+            }
+            addPrice(serviceName, "$" + resultStrs[0], Double.parseDouble(resultStrs[0]), serviceId, extras.toString());
+            return resultStrs;
+        } else {
+            addPrice(serviceName, "Taxi Price not available", 0.0, serviceId, "");
+            return null;
         }
-        StringBuilder extras = new StringBuilder();
-        for(int i = 1; i<resultStrs.length;i++){
-            extras.append(resultStrs[i]+",");
-        }
-        addPrice(serviceName, "$"+resultStrs[0], Double.parseDouble(resultStrs[0]), serviceId, extras.toString());
-        return resultStrs;
     }
 
     @Override
