@@ -1,5 +1,6 @@
 package com.example.natalie.tuber;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -21,19 +22,24 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
     private final String LOG_TAG = FetchTaxiPriceTask.class.getSimpleName();
     //private String api_key;
+    private final Context mContext;
 
-    public FetchUberPriceTask() {
-
+    public FetchUberPriceTask(Context context) {
+        mContext = context;
     }
 
     private String[] getWeatherDataFromJson(String taxiFareJsonStr, int numEntities)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
-        final String UBER_LOW_ESTIMATE = "low_estimate";
-        final String UBER_HIGH_ESTIMATE = "high_estimate";
 
-        final String[] Entities = {UBER_LOW_ESTIMATE, UBER_HIGH_ESTIMATE};
+        //String serviceName, String price, double lowPrice, int identity, String extras
+        final String UBER_TYPE = "localized_display_name"; //serviceName
+        final String UBER_LOW_ESTIMATE = "low_estimate"; //lowPrice
+        final String UBER_HIGH_ESTIMATE = "high_estimate";
+        final String UBER_ESTIMATE = "estimate"; //price
+
+        final String[] Entities = {UBER_TYPE, UBER_LOW_ESTIMATE, UBER_HIGH_ESTIMATE, UBER_ESTIMATE};
 
         String[] resultStrs = new String[numEntities];
 
@@ -74,6 +80,8 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
         // Will contain the raw JSON response as a string.
         String taxiFareJsonStr = null;
+
+        String uber1Str;
 
         try {
             // Construct the URL for the TaxiFareFinder query
@@ -126,12 +134,18 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
             }
             taxiFareJsonStr = buffer.toString();
 
-            Log.v(LOG_TAG, "Fare finder string: " + taxiFareJsonStr);
+
+            JSONObject uberJson = new JSONObject(taxiFareJsonStr);
+            Log.v(LOG_TAG, "Fare finder string: " + uberJson.getJSONArray("prices").getJSONObject(0));
+
+            uber1Str = uberJson.getJSONArray("prices").getJSONObject(0).toString();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
             return null;
+        } catch (JSONException e) {
+            e.printStackTrace();
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -149,7 +163,10 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
         // for now, we just get the total amount
 
         try {
-            return getWeatherDataFromJson(taxiFareJsonStr, 1);
+            JSONObject uberJson = new JSONObject(taxiFareJsonStr);
+
+            return getWeatherDataFromJson(String.valueOf(uberJson.getJSONArray("prices").getJSONObject(0)), 4);
+            //return weatherArray.getJSONObject(0).getInt("low_estimate");
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
@@ -158,5 +175,6 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
         // This will only happen if there was an error getting or parsing the forecast.
         return null;
     }
+
 }
 
