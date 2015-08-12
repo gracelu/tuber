@@ -23,6 +23,8 @@
             android:name=".ResultsActivity"
             android:label="@string/app_name" >
         </activity>
+        <provider
+            android:authorities="com.example.natalie.tuber"
+            android:name=".data.PriceProvider" />
     </application>
-
 </manifest>
