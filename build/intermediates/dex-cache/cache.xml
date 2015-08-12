@@ -2,32 +2,32 @@
 <items version="2" >
 
     <item
-        jar="/Users/jinglingli/Study/CMSC/Summer 2015/CodeU/group_project/tuber/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
-        <dex dex="/Users/jinglingli/Study/CMSC/Summer 2015/CodeU/group_project/tuber/app/build/intermediates/pre-dexed/debug/classes-c44cee017f6d4704c75795445d39832873455a9f.jar" />
-    </item>
-    <item
-        jar="/Users/jinglingli/Study/CMSC/Summer 2015/CodeU/group_project/tuber/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
+        jar="/Users/glu/Downloads/tuber/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
-        <dex dex="/Users/jinglingli/Study/CMSC/Summer 2015/CodeU/group_project/tuber/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-d607ca5fc245fb6ec8b7f7ccf69be888e26806d9.jar" />
+        <dex dex="/Users/glu/Downloads/tuber/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-359f22edb44b219fc7db4ba12244963b8fa8d70c.jar" />
     </item>
     <item
-        jar="/Users/jinglingli/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
-        <dex dex="/Users/jinglingli/Study/CMSC/Summer 2015/CodeU/group_project/tuber/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1-a26336ef1ba7f9217e910714e8611cb4d554c865.jar" />
-    </item>
-    <item
-        jar="/Users/jinglingli/Study/CMSC/Summer 2015/CodeU/group_project/tuber/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
+        jar="/Users/glu/Downloads/tuber/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="f8efd0096475e0daf054267b61544e10dc776503">
-        <dex dex="/Users/jinglingli/Study/CMSC/Summer 2015/CodeU/group_project/tuber/app/build/intermediates/pre-dexed/debug/classes-d5db920ccf2364e176e5f80ff36caadc5650e6ec.jar" />
+        <dex dex="/Users/glu/Downloads/tuber/app/build/intermediates/pre-dexed/debug/classes-374fc6c65d5df33a86d71adfbc2a4b0a606c174c.jar" />
+    </item>
+    <item
+        jar="/Users/glu/Downloads/tuber/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="/Users/glu/Downloads/tuber/app/build/intermediates/pre-dexed/debug/classes-3e499903d6ab8ed550161cb9a9aaf48569ee46d1.jar" />
+    </item>
+    <item
+        jar="/Users/glu/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/Users/glu/Downloads/tuber/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1-1fee6ad0a9f1c654bf4f90d1c9a6ec7b7502a952.jar" />
     </item>
 
 </items>
