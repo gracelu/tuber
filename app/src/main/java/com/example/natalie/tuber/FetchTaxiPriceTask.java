@@ -31,7 +31,7 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
     private String mapi_key;
     private final Context mContext;
     private final String serviceName = "Taxi";
-    private final int serviceId = 1;
+    private final int serviceId = 0;
 
     public FetchTaxiPriceTask(Context context, String api_key) {
         mContext = context;

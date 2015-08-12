@@ -47,10 +47,10 @@ public class QueryFragment extends Fragment implements LoaderManager.LoaderCallb
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        Log.v(LOG_TAG, "onCreateView");
         mQueryAdapter =  new PriceAdapter(getActivity(), null, 0);
         View rootView = inflater.inflate(R.layout.fragment_query, container, false);
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_taxi);
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_uber);
         listView.setAdapter(mQueryAdapter);
         return rootView;
     }
@@ -66,7 +66,10 @@ public class QueryFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     private void updatePrice() {
+        Log.v(LOG_TAG, "update price");
         FetchTaxiPriceTask taxiTask = new FetchTaxiPriceTask(getActivity(), api_key);
+        FetchUberPriceTask uberTask = new FetchUberPriceTask(getActivity());
+        uberTask.execute("42.368025","-71.022155","42.362571","-71.055543");
         taxiTask.execute("42.368025,-71.022155","42.362571,-71.055543");
         Log.v(LOG_TAG, "task running");
     }
