@@ -1,8 +1,13 @@
 package com.example.natalie.tuber;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.natalie.tuber.data.PriceContract;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +29,7 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
     private final String LOG_TAG = FetchTaxiPriceTask.class.getSimpleName();
     //private String api_key;
     private final Context mContext;
+    private final int serviceId = 1;
 
     public FetchUberPriceTask(Context context) {
         mContext = context;
@@ -58,10 +64,7 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
                 resultStrs[i] = taxiFareJson.getString(Entities[i]);
             }
 
-
-        for (String s : resultStrs) {
-            Log.v(LOG_TAG, "Uber: " + s);
-        }
+        addPrice(resultStrs[0], resultStrs[3], Double.parseDouble(resultStrs[1]), serviceId, resultStrs[2]);
         return resultStrs;
     }
 
@@ -194,6 +197,29 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
         // This will only happen if there was an error getting or parsing the forecast.
         return null;
+    }
+
+    long addPrice(String serviceName, String price, double lowPrice, int identity, String extras) {
+        long priceId;
+        ContentValues priceValues = new ContentValues();
+
+        // Then add the data, along with the corresponding name of the data type,
+        // so the content provider knows what kind of value is being inserted.
+        priceValues.put(PriceContract.PriceEntry.COLUMN_SERVICE_NAME, serviceName);
+        priceValues.put(PriceContract.PriceEntry.COLUMN_PRICE, price);
+        priceValues.put(PriceContract.PriceEntry.COLUMN_LOW_PRICE, lowPrice);
+        priceValues.put(PriceContract.PriceEntry.COLUMN_IDENTITY, identity);
+        priceValues.put(PriceContract.PriceEntry.COLUMN_EXTRA, extras);
+
+        // Finally, insert location data into the database.
+        Uri insertedUri = mContext.getContentResolver().insert(
+                PriceContract.PriceEntry.CONTENT_URI,
+                priceValues
+        );
+
+        // The resulting URI contains the ID for the row.  Extract the locationId from the Uri.
+        priceId = ContentUris.parseId(insertedUri);
+        return priceId;
     }
 
 }

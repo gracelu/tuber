@@ -1,10 +1,15 @@
 package com.example.natalie.tuber;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import com.example.natalie.tuber.data.PriceContract;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,14 +29,13 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
 
     private final String LOG_TAG = FetchTaxiPriceTask.class.getSimpleName();
     private String mapi_key;
-    private ArrayAdapter<String> mQueryAdapterTaxi;
     private final Context mContext;
+    private final String serviceName = "Taxi";
+    private final int serviceId = 0;
 
-
-    public FetchTaxiPriceTask(Context context, String api_key, ArrayAdapter<String> queryAdapterTaxi) {
+    public FetchTaxiPriceTask(Context context, String api_key) {
         mContext = context;
-        mapi_key = api_key;
-        mQueryAdapterTaxi = queryAdapterTaxi;
+        mapi_key = "wEGuch2qepAq";
     }
 
     private String[] getTaxiDataFromJson(String taxiFareJsonStr, int numEntities)
@@ -43,9 +47,8 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
         final String TAXIFARE_INI_FARE = "initial_fare";
         final String TAXIFARE_METERED_FARE = "metered_fare";
         final String TAXIFARE_TIP = "tip_amount";
-        final String TAXIFARE_AREA = "rate_area";
         final String[] Entities = {TAXIFARE_TOTAL_FARE, TAXIFARE_INI_FARE, TAXIFARE_METERED_FARE,
-                TAXIFARE_TIP, TAXIFARE_AREA};
+                TAXIFARE_TIP};
 
         String[] resultStrs = new String[numEntities];
 
@@ -59,23 +62,12 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
                 resultStrs[i] = taxiFareJson.getString(Entities[i]);
             }
         }
-
-        for (String s : resultStrs) {
-            Log.v(LOG_TAG, "Taxi fare entry: " + s);
+        StringBuilder extras = new StringBuilder();
+        for(int i = 1; i<resultStrs.length;i++){
+            extras.append(resultStrs[i]+",");
         }
+        addPrice(serviceName, resultStrs[0], Double.parseDouble(resultStrs[0]), serviceId, extras.toString());
         return resultStrs;
-    }
-
-    @Override
-    protected void onPostExecute (String[] result){
-        Log.v(LOG_TAG, "Taxi total fare is: "+result[0]);
-        if (result != null && mQueryAdapterTaxi != null) {
-            mQueryAdapterTaxi.clear();
-            for(String dayForecastStr : result) {
-                mQueryAdapterTaxi.add(dayForecastStr);
-            }
-            // New data is back from the server.  Hooray!
-        }
     }
 
     @Override
@@ -164,7 +156,7 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
         // for now, we just get the total amount
 
         try {
-            return getTaxiDataFromJson(taxiFareJsonStr, 1);
+            return getTaxiDataFromJson(taxiFareJsonStr, 4);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
@@ -172,6 +164,29 @@ public class FetchTaxiPriceTask extends AsyncTask<String, Void, String[]> {
 
         // This will only happen if there was an error getting or parsing the forecast.
         return null;
+    }
+
+    long addPrice(String serviceName, String price, double lowPrice, int identity, String extras) {
+        long priceId;
+        ContentValues priceValues = new ContentValues();
+
+        // Then add the data, along with the corresponding name of the data type,
+        // so the content provider knows what kind of value is being inserted.
+        priceValues.put(PriceContract.PriceEntry.COLUMN_SERVICE_NAME, serviceName);
+        priceValues.put(PriceContract.PriceEntry.COLUMN_PRICE, price);
+        priceValues.put(PriceContract.PriceEntry.COLUMN_LOW_PRICE, lowPrice);
+        priceValues.put(PriceContract.PriceEntry.COLUMN_IDENTITY, identity);
+        priceValues.put(PriceContract.PriceEntry.COLUMN_EXTRA, extras);
+
+        // Finally, insert location data into the database.
+        Uri insertedUri = mContext.getContentResolver().insert(
+                PriceContract.PriceEntry.CONTENT_URI,
+                priceValues
+        );
+
+        // The resulting URI contains the ID for the row.  Extract the locationId from the Uri.
+        priceId = ContentUris.parseId(insertedUri);
+        return priceId;
     }
 }
 
