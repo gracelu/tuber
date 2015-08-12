@@ -129,12 +129,16 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
             try {
                 inputStream = urlConnection.getInputStream();
             } catch (FileNotFoundException e) {
+                addPrice("Uber", "Uber price not available", 0.0, serviceId, "");
+
                 return null;
             }
 
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
                 // Nothing to do.
+                addPrice("Uber", "Uber price not available", 0.0, serviceId, "");
+
                 return null;
             }
             reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -146,6 +150,8 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
+                addPrice("Uber", "Uber price not available", 0.0, serviceId, "");
+
                 return null;
             }
             taxiFareJsonStr = buffer.toString();
@@ -156,6 +162,8 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
             try {
                 uber1Str = uberJson.getJSONArray("prices").getJSONObject(0).toString();
             } catch (JSONException e) {
+                addPrice("Uber", "Uber price not available", 0.0, serviceId, "");
+
                 return null;
             }
         } catch (IOException e) {
@@ -186,8 +194,10 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
              Log.v(LOG_TAG, "Going "+uberJson);
             if (uberJson != null)
                 return getWeatherDataFromJson(String.valueOf(uberJson.getJSONArray("prices").getJSONObject(0)), 4);
-            else
+            else {
+                addPrice("Uber", "Uber price not available", 0.0, serviceId, "");
                 return null;
+            }
 
             //return weatherArray.getJSONObject(0).getInt("low_estimate");
         } catch (JSONException e) {
@@ -196,6 +206,8 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
         }
 
         // This will only happen if there was an error getting or parsing the forecast.
+        addPrice("Uber", "Uber price not available", 0.0, serviceId, "");
+
         return null;
     }
 
