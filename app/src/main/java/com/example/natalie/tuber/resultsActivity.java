@@ -3,30 +3,30 @@ package com.example.natalie.tuber;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class resultsActivity extends ActionBarActivity {
     private final String LOG_TAG = resultsActivity.class.getSimpleName();
+    QueryFragment qFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_activity);
-        String[] Lat_long = getIntent().getStringArrayExtra("LATLONG_DATA");
-        Log.v(LOG_TAG,"rotate");
-        Bundle arguments = new Bundle();
-        arguments.putStringArray("LATLONG_DATA", Lat_long);
-        QueryFragment qFragment = new QueryFragment();
-        qFragment.setArguments(arguments);
-
         if (savedInstanceState == null) {
+            String[] Lat_long = getIntent().getStringArrayExtra("LATLONG_DATA");
+            Bundle arguments = new Bundle();
+            arguments.putStringArray("LATLONG_DATA", Lat_long);
+            qFragment = new QueryFragment();
+            qFragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, qFragment)
                     .commit();
         }
-
     }
 
     @Override
@@ -44,4 +44,5 @@ public class resultsActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
