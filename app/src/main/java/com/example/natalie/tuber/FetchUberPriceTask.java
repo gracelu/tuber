@@ -110,7 +110,7 @@ public class FetchUberPriceTask extends AsyncTask<String, Void, String[]> {
                     .appendQueryParameter(DESTINATION, params[1])
                     .build();*/
 
-            String pass_url = "https://api.uber.com/v1/estimates/price?server_token=28t86KafW8mM1WjOVyQJ2_rLmVWEU71LVeC5ucjW&start_latitude=" + params[0] + "&start_longitude=" + params[1] + "&end_latitude=" + params[2] + "&end_longitude=" + params[3];
+            String pass_url = "https://api.uber.com/v1/estimates/price?server_token=###&start_latitude=" + params[0] + "&start_longitude=" + params[1] + "&end_latitude=" + params[2] + "&end_longitude=" + params[3];
 
             Log.v("passurl: ", pass_url);
 
